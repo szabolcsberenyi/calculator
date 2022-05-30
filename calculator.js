@@ -1,50 +1,3 @@
-function add(x,y){
-    return x+y;
-}
-
-function substract(x,y) {
-    return x-y;
-}
-
-function multiply(x,y){
-    return x*y
-}
-
-function divide(x,y){
-    return x/y;
-}
-
-function operate(operator, x, y) {
-    switch (operator) {
-        case 'plus':
-            return add(x,y);
-            break;
-        case 'minus':
-            return substract(x,y);
-            break;
-        case 'multiply':
-            return multiply(x,y);
-        case 'divide':
-            return divide(x,y);
-        default:
-            break;
-    }
-}
-
-let leftNumber = 0;
-let operator = '';
-
-function StoreNumber() {
-    leftNumber = parseInt(event.target.text);
-}
-
-function OperatorListener() {
-    if(operator !== ''){
-        operator = event.target.text;
-        
-    }
-}
-
 const oneButton = document.querySelector('#a1');
 const twoButton = document.querySelector('#a2');
 const threeButton = document.querySelector('#a3');
@@ -63,14 +16,90 @@ const clearButton = document.querySelector('#AC');
 const equalsButton = document.querySelector('#equal');
 
 
-
-
-
-
 const displayField = document.querySelector('#screen');
+
+
+function add(x,y){
+    return x+y;
+}
+
+function substract(x,y) {
+    return x-y;
+}
+
+function multiply(x,y){
+    return x*y
+}
+
+function divide(x,y){
+    return x/y;
+}
+
+function operate(operator, x, y) {
+    switch (operator) {
+        case '+':
+            return add(x,y);
+            break;
+        case '-':
+            return substract(x,y);
+            break;
+        case '*':
+            return multiply(x,y);
+        case '/':
+            return divide(x,y);
+        default:
+            break;
+    }
+}
+
+let rightNumber = null;
+let leftNumber = null;
+
+let operator = null;
+
+function NumberListener() {
+    
+    if (rightNumber === null) {
+        rightNumber = parseInt(event.target.innerText);
+    }else{
+
+        rightNumber *= 10;
+        rightNumber += parseInt(event.target.innerText);
+    }
+    console.log(rightNumber);
+    print();
+}
+
+function OperatorListener() {
+    operator = event.target.innerText;
+    if(!leftNumber){
+        leftNumber = rightNumber;
+        rightNumber = null;
+    }else{
+        EqualListener();
+        operator = event.target.innerText;
+
+    }
+    
+}
+
+function EqualListener(){
+    if(leftNumber && rightNumber && operator){
+        console.log('Solution: '+ operate(operator, leftNumber, rightNumber));
+        displayField.value = operate(operator, leftNumber, rightNumber);
+        leftNumber = operate(operator, leftNumber, rightNumber);
+        rightNumber = null;
+        operator = null;
+    }
+}
 
 
 
 function print() {
-    displayField.text = leftNumber;
+    displayField.value = rightNumber;
 }
+
+
+oneButton.addEventListener('click', NumberListener);
+plusButton.addEventListener('click', OperatorListener);
+equalsButton.addEventListener('click', EqualListener);
